@@ -1,0 +1,111 @@
+R1#show running-config
+Building configuration...
+
+Current configuration : 1029 bytes
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+memory-size iomem 5
+ip cef
+!
+!
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+archive
+ log config
+  hidekeys
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+interface FastEthernet0/0
+ description Link-to-R2
+ ip address 10.0.12.1 255.255.255.252
+ ip ospf network point-to-point
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ description Link-to-R3
+ ip address 10.0.13.1 255.255.255.0
+ ip ospf network point-to-point
+ speed 100
+ full-duplex
+!
+router ospf 1
+ router-id 1.1.1.1
+ log-adjacency-changes
+ network 1.1.1.1 0.0.0.0 area 1
+ network 10.0.12.0 0.0.0.3 area 1
+ network 10.0.13.0 0.0.0.3 area 1
+!
+ip forward-protocol nd
+!
+!
+ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+!
+!
+end

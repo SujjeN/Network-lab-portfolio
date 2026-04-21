@@ -1,0 +1,108 @@
+R5#show running-config
+Building configuration...
+
+Current configuration : 961 bytes
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R5
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+memory-size iomem 5
+ip cef
+!
+!
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+archive
+ log config
+  hidekeys
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 5.5.5.5 255.255.255.255
+!
+interface FastEthernet0/0
+ description Link-to-R4
+ ip address 10.0.45.2 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ description Link-to-R6
+ ip address 10.0.47.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+router ospf 1
+ router-id 5.5.5.5
+ log-adjacency-changes
+ network 5.5.5.5 0.0.0.0 area 2
+ network 10.0.45.0 0.0.0.3 area 0
+ network 10.0.47.0 0.0.0.3 area 2
+!
+ip forward-protocol nd
+!
+!
+ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+!
+!
+end
