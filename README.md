@@ -6,6 +6,8 @@ on EVE-NG Community Edition running on Proxmox VE.
 ## Topology
 Area 1 (R1, R2-ABR, R3-ABR) → Area 0 (R4-ABR) → Area 2 (R5-ABR, R6)
 
+![Topology](topology.png)
+
 ## Skills Demonstrated
 - Multi-area OSPF design and ABR configuration
 - Inter-area routing verification (O IA routes)
@@ -15,7 +17,7 @@ Area 1 (R1, R2-ABR, R3-ABR) → Area 0 (R4-ABR) → Area 2 (R5-ABR, R6)
 
 ## Files
 - `configs/` — running configs for all 6 routers
-- `screenshots/` — EVE-NG topology and verification outputs  
+- `screenshots/` — EVE-NG topology and verification outputs
 - `OSPF-MultiArea-Lab-Report.pdf` — full lab documentation
 
 ## Verification
