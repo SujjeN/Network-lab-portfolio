@@ -1,0 +1,143 @@
+Wifi : D:88.4Mbps U:90.7
+LAN : D:86.7Mbps  U:92.2 
+
+File download on wifi : around 2Mbps-5Mbps  (Similar on Wired Connection)
+
+File uploading on wifi https://fla.filetransfer.comet-group.com/ 
+-around 250KB/s   (Similar on wired connection)
+-1GB file took around 1hour
+
+My 5G pocket wifi
+Upload around 500KB/s and 32min for 1 GB  file
+
+
+Ticket to ITR2#sh run
+Building configuration...
+
+Current configuration : 1819 bytes
+!
+! Last configuration change at 12:05:11 UTC Wed Jun 10 2026
+upgrade fpd auto
+version 15.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+aqm-register-fnf
+!
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+ ip ospf 1 area 0
+!
+interface FastEthernet0/0
+ ip address 10.0.12.2 255.255.255.252
+ ip ospf message-digest-key 1 md5 Cisco
+ ip ospf network point-to-point
+ duplex half
+!
+interface FastEthernet1/0
+ ip address 10.0.23.2 255.255.255.0
+ ip ospf message-digest-key 1 md5 Cisco
+ duplex half
+!
+interface FastEthernet2/0
+ ip address 10.3.0.2 255.255.255.0
+ duplex half
+!
+router ospf 1
+ router-id 2.2.2.2
+ area 0 authentication message-digest
+ area 3 nssa default-information-originate
+ area 3 filter-list prefix FILTER-IN in
+ network 10.0.12.0 0.0.0.3 area 0
+ network 10.0.23.0 0.0.0.255 area 0
+ network 10.3.0.0 0.0.0.255 area 3
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+ip prefix-list FILTER-IN seq 5 deny 5.5.5.5/32
+ip prefix-list FILTER-IN seq 10 permit 0.0.0.0/0 le 32
+no cdp log mismatch duplex
+!
+!
+!
+control-plane
+!
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login
+ transport input all
+!
+!
+end

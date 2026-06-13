@@ -1,0 +1,135 @@
+R1#sh run
+Building configuration...
+
+Current configuration : 1843 bytes
+!
+! Last configuration change at 12:06:43 UTC Wed Jun 10 2026
+upgrade fpd auto
+version 15.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+aqm-register-fnf
+!
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+interface FastEthernet0/0
+ ip address 10.1.0.1 255.255.255.0
+ ip ospf network non-broadcast
+ ip ospf priority 10
+ duplex half
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex half
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ duplex half
+!
+interface FastEthernet3/0
+ ip address 10.0.12.1 255.255.255.252
+ ip ospf message-digest-key 1 md5 Cisco
+ ip ospf network point-to-point
+ duplex half
+!
+router ospf 1
+ router-id 1.1.1.1
+ area 0 authentication message-digest
+ area 1 range 10.1.4.0 255.255.252.0
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.0.12.0 0.0.0.3 area 0
+ network 10.1.0.0 0.0.0.255 area 1
+ neighbor 10.1.0.5
+ neighbor 10.1.0.4
+ default-information originate always
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+no cdp log mismatch duplex
+!
+!
+!
+control-plane
+!
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login
+ transport input all
+!
+!
+end

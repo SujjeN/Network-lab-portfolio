@@ -1,0 +1,122 @@
+R7#sh run
+Building configuration...
+
+Current configuration : 1497 bytes
+!
+! Last configuration change at 10:56:59 UTC Wed Jun 10 2026
+upgrade fpd auto
+version 15.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R7
+!
+boot-start-marker
+boot-end-marker
+!
+aqm-register-fnf
+!
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 7.7.7.7 255.255.255.255
+!
+interface FastEthernet0/0
+ ip address 10.3.0.7 255.255.255.0
+ duplex half
+!
+interface FastEthernet1/0
+ ip address 172.16.78.7 255.255.255.0
+ duplex half
+!
+!
+router eigrp 100
+ network 172.16.78.0 0.0.0.255
+ redistribute ospf 1 metric 1000000 100 255 1 1500
+!
+router ospf 1
+ router-id 7.7.7.7
+ area 3 nssa
+ redistribute eigrp 100 subnets metric 100
+ network 7.7.7.7 0.0.0.0 area 3
+ network 10.3.0.0 0.0.0.255 area 3
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+no cdp log mismatch duplex
+!
+!
+!
+control-plane
+!
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login
+ transport input all
+!
+!
+end
